@@ -15,6 +15,7 @@ public class ProductController {
 
     @Autowired
     private ProductService service;
+    private int idCount = 0;
 
     @GetMapping("/create")
     public String createProductPage(Model model) {
@@ -25,8 +26,21 @@ public class ProductController {
 
     @PostMapping("/create")
     public String createProductPost(@ModelAttribute Product product, Model model) {
+        product.setProductId(String.valueOf(idCount));
+        idCount++;
         service.create(product);
         return "redirect:list";
+    }
+
+    @GetMapping("/delete/{productId}")
+    public String deleteProductPost(@PathVariable String productId, Model model) {
+        try {
+            Product product = service.findById(productId);
+            service.delete(product);
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
+        }
+        return "redirect:/product/list";
     }
 
     @GetMapping("/list")
