@@ -17,7 +17,7 @@ public class ProductController {
     private ProductService service;
     private int idCount = 0;
 
-    @GetMapping("/")
+    @GetMapping("")
     public String goToHomePage(Model model){
         return "homePage";
     }
