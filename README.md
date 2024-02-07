@@ -17,6 +17,8 @@ Q: You already implemented two new features using Spring Boot. Check again your 
 2. Since product IDs are assigned sequentially, it's easy to guess and approximate the ID of products and delete them immediately by adding "/delete/{id}" into the URL. I believe this aspect could also be improved, perhaps by randomly generating unique IDs for each product.
 3. My homepage is still very lacking.
 
+<br>
+
 # Reflection 2
 
 <hr>
