@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Iterator;
 
@@ -21,13 +20,23 @@ class ProductRepositoryTest {
     @BeforeEach
     void setUp() {
     }
+
+    Product createProduct(String id, String name, int quantity) {
+        Product product = new Product();
+        product.setProductId(id);
+        product.setProductName(name);
+        product.setProductQuantity(quantity);
+        return product;
+    }
+
+    Product createProductInRepository(String id, String name, int quantity) {
+        Product product = createProduct(id, name, quantity);
+        productRepository.create(product);
+        return product;
+    }
     @Test
     void testCreateAndFind() {
-        Product product = new Product();
-        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        product.setProductName("Sampo Cap Bambang");
-        product.setProductQuantity(100);
-        productRepository.create(product);
+        Product product = createProductInRepository("eb558e9f-1c39-460e-8860-71af6af63bd6", "Sampo Cap Bambang", 100);
 
         Iterator<Product> productIterator = productRepository.findAll();
         assertTrue(productIterator.hasNext());
@@ -45,17 +54,8 @@ class ProductRepositoryTest {
 
     @Test
     void testFindAllIfMoreThanOneProduct() {
-        Product product1 = new Product();
-        product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
-        product1.setProductName("Sampo Cap Bambang");
-        product1.setProductQuantity(100);
-        productRepository.create(product1);
-
-        Product product2 = new Product();
-        product2.setProductId("a0f9de46-90b1-437d-a0bf-d0821dde9096");
-        product2.setProductName("Sampo Cap Usep");
-        product2.setProductQuantity(50);
-        productRepository.create(product2);
+        Product product1 = createProductInRepository("eb558e9f-1c39-460e-8860-71af6af63bd6", "Sampo Cap Bambang", 100);
+        Product product2 = createProductInRepository("a0f9de46-90b1-437d-a0bf-d0821dde9096", "Sampo Cap Usep", 50);
 
         Iterator<Product> productIterator = productRepository.findAll();
         assertTrue(productIterator.hasNext());
@@ -65,4 +65,43 @@ class ProductRepositoryTest {
         assertEquals(product2.getProductId(), savedProduct.getProductId());
         assertFalse(productIterator.hasNext());
     }
+
+    @Test
+    void testDeleteIfExist() {
+        Product product = createProductInRepository("eb558e9f-1c39-460e-8860-71af6af63bd6", "Sampo Cap Bambang", 100);
+        Iterator<Product> productIterator = productRepository.findAll();
+        assertTrue(productIterator.hasNext());
+
+        productRepository.delete(product.getProductId());
+        assertFalse(productIterator.hasNext());
+    }
+
+    @Test
+    void testDeleteIfNotExist() {
+        Product product = createProductInRepository("eb558e9f-1c39-460e-8860-71af6af63bd6", "Sampo Cap Bambang", 100);
+        Iterator<Product> productIterator = productRepository.findAll();
+        assertTrue(productIterator.hasNext());
+
+        assertThrows(RuntimeException.class, () -> productRepository.delete("0"));
+    }
+
+    @Test
+    void testEditIfExist() {
+        Product product1 = createProductInRepository("eb558e9f-1c39-460e-8860-71af6af63bd6", "Sampo Cap Bambang", 100);
+        Product product2 = createProduct(product1.getProductId(), "New Name", 33);
+
+        productRepository.edit(product2);
+        assertEquals(product1.getProductId(), product2.getProductId());
+        assertEquals(product1.getProductName(), product2.getProductName());
+        assertEquals(product1.getProductQuantity(), product2.getProductQuantity());
+    }
+
+    @Test
+    void testEditIfNotExist() {
+        Product product1 = createProductInRepository("eb558e9f-1c39-460e-8860-71af6af63bd6", "Sampo Cap Bambang", 100);
+        Product product2 = createProduct("0", "New Name", 33);
+
+        assertThrows(RuntimeException.class, () -> productRepository.edit(product2));
+    }
+
 }

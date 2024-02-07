@@ -20,7 +20,7 @@ public class ProductRepository {
         return productData.iterator();
     }
 
-    public void delete(String productId) {
+    public void delete(String productId) throws RuntimeException {
         Product deletedProduct = findById(productId);
         productData.remove(deletedProduct);
     }
@@ -32,7 +32,7 @@ public class ProductRepository {
         throw new ProductNotFoundException("Product not found for id: " + productId);
     }
 
-    public Product edit(Product product) {
+    public Product edit(Product product) throws RuntimeException {
         Product changedProduct = findById(product.getProductId());
         changedProduct.setProductQuantity(product.getProductQuantity());
         changedProduct.setProductName(product.getProductName());
