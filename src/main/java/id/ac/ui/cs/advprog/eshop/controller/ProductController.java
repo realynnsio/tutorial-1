@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/product")
 public class ProductController {
 
     @Autowired
@@ -22,22 +21,22 @@ public class ProductController {
         return "homePage";
     }
 
-    @GetMapping("/create")
+    @GetMapping("/product/create")
     public String createProductPage(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
         return "createProduct";
     }
 
-    @PostMapping("/create")
+    @PostMapping("/product/create")
     public String createProductPost(@ModelAttribute Product product, Model model) {
         product.setProductId(String.valueOf(idCount));
         idCount++;
         service.create(product);
-        return "redirect:list";
+        return "redirect:/product/list";
     }
 
-    @GetMapping("/edit/{productId}")
+    @GetMapping("/product/edit/{productId}")
     public String editProductPage(@PathVariable String productId, Model model) {
         try {
             Product product = service.findById(productId);
@@ -48,20 +47,20 @@ public class ProductController {
         return "editProduct";
     }
 
-    @PostMapping("/edit-product/{productId}")
+    @PostMapping("/product/edit-product/{productId}")
     public String editProductPost(@ModelAttribute Product product, Model model, @PathVariable String productId) {
         product.setProductId(productId);
         service.edit(product);
         return "redirect:/product/list";
     }
 
-    @GetMapping("/delete/{productId}")
+    @GetMapping("/product/delete/{productId}")
     public String deleteProductPost(@PathVariable String productId, Model model) {
         service.delete(productId);
         return "redirect:/product/list";
     }
 
-    @GetMapping("/list")
+    @GetMapping("/product/list")
     public String productListPage(Model model) {
         List<Product> allProducts = service.findAll();
         model.addAttribute("products", allProducts);
