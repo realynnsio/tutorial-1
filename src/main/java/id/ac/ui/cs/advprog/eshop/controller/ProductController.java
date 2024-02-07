@@ -17,6 +17,11 @@ public class ProductController {
     private ProductService service;
     private int idCount = 0;
 
+    @GetMapping("/")
+    public String goToHomePage(Model model){
+        return "homePage";
+    }
+
     @GetMapping("/create")
     public String createProductPage(Model model) {
         Product product = new Product();
