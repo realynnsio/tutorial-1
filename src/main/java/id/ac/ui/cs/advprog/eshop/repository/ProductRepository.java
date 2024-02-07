@@ -20,8 +20,9 @@ public class ProductRepository {
         return productData.iterator();
     }
 
-    public void delete(Product product) {
-        productData.remove(product);
+    public void delete(String productId) {
+        Product deletedProduct = findById(productId);
+        productData.remove(deletedProduct);
     }
 
     public Product findById(String productId) throws ProductNotFoundException {

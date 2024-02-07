@@ -52,12 +52,7 @@ public class ProductController {
 
     @GetMapping("/delete/{productId}")
     public String deleteProductPost(@PathVariable String productId, Model model) {
-        try {
-            Product product = service.findById(productId);
-            service.delete(product);
-        } catch (RuntimeException e) {
-            System.err.println(e.getMessage());
-        }
+        service.delete(productId);
         return "redirect:/product/list";
     }
 
