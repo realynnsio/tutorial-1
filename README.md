@@ -39,3 +39,25 @@ What do you think about the cleanliness of the code of the new functional test s
 
 **Answer:**
 I think it wouldn't be very clean and would reduce code quality to do this since it's redundant to make a separate suite despite requiring the same setup. For a more efficient alternative, it would be better to broaden the CreateProductFunctionalTest.java into a ProductFunctionalTest.java where both tests of creating products and tests of verifying product amounts could be housed in one place.
+
+<br>
+
+# Reflection 3
+
+<hr>
+
+Q: List the code quality issue(s) that you fixed during the exercise and explain your strategy on fixing them.
+
+**Answer:**
+Most of the code quality issues that I encountered using PMD were naming issues, unused import issues, and unnecessary modifier issues. These were the issues I fixed:
+- The JUnit 5 test method name 'createProductPostTest_ShouldRedirectToProductList' doesn't match '[a-z][a-zA-Z0-9]*'
+- The JUnit 5 test method name 'editProductPostTest_ShouldRedirectToProductList' doesn't match '[a-z][a-zA-Z0-9]*'
+
+Though I’ve only fixed a few of the naming issues thus far, my strategy on fixing the rest is to follow the recommended course of actions from PMD, such as renaming my methods and removing unused lines. I also had an issue on braces, where PMD suggested I enforce a policy for braces on control statements. If I were to fix it, I would follow its suggestions there as well.
+
+<br>
+
+Q: Look at your CI/CD workflows (GitHub)/pipelines (GitLab). Do you think the current implementation has met the definition of Continuous Integration and Continuous Deployment? Explain the reasons (minimum 3 sentences)!
+
+**Answer:**
+I believe my implementation has met the definition of CI/CD. Though I wasn’t able to make my own workflow for deployment, Koyeb has already handled that through its features, so with every push to the main branch it’ll always re-deploy. My tests have been automated and have a decent percentage of coverage too, covering everything other than the main method in the EshopApplication. The scorecard analysis and PMD analysis have been automated through GitHub workflows as well.
