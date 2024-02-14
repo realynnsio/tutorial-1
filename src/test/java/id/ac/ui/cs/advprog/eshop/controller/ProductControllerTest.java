@@ -108,6 +108,7 @@ public class ProductControllerTest {
         when(productService.findAll()).thenReturn(productData);
         mockMvc.perform(get("/product/list"))
                 .andExpect(status().isOk())
+                .andExpect(view().name("productList"))
                 .andExpect(content().string(containsString("Product List")))
                 .andExpect(content().string(containsString(product.getProductName())));
 
@@ -169,6 +170,7 @@ public class ProductControllerTest {
         when(productService.findAll()).thenReturn(productData);
         mockMvc.perform(get("/product/list"))
                 .andExpect(status().isOk())
+                .andExpect(view().name("productList"))
                 .andExpect(content().string(containsString("Product List")))
                 .andExpect(content().string(not(containsString("Liesl"))))
                 .andExpect(content().string(containsString("Mischa")));
