@@ -155,7 +155,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    void editProductPostTest_ShouldRedirectToProductList() throws Exception {
+    void editProductPostRedirectToProductListTest() throws Exception {
         String productId = "1000000";
         Product product = createProduct(productId, "Liesl", 1);
         Product product2 = createProduct(productId, "Mischa", 1);
