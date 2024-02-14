@@ -97,7 +97,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    void createProductPostTest_ShouldRedirectToProductList() throws Exception {
+    void createProductPostRedirectToProductListTest() throws Exception {
         Product product = createProduct("1000000", "Liesl", 1);
 
         when(productService.create(product)).thenReturn(addProductIntoRepository(product));
