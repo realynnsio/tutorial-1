@@ -1,0 +1,35 @@
+name: PMD Analysis
+
+## Run PMD analysis on all branches by default
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    name: Run PMD
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+      - uses: pmd/pmd-github-action@v1
+        with:
+          rulesets: 'rulesets/java/quickstart.xml'
+          sourcePath: 'src/'
+          analyzeModifiedFilesOnly: 'false'
+          format: 'text'
+          failOnViolation: true
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2 # v2.2.4
+        with:
+          sarif_file: pmd-report.sarif
