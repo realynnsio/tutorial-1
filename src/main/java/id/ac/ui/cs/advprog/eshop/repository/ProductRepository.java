@@ -39,7 +39,7 @@ public class ProductRepository {
         return changedProduct;
     }
 
-    class ProductNotFoundException extends RuntimeException {
+    public static class ProductNotFoundException extends RuntimeException {
         public ProductNotFoundException(String message) {
             super(message);
         }
