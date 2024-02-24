@@ -103,7 +103,7 @@ public class ProductControllerTest {
         when(productService.create(product)).thenReturn(addProductIntoRepository(product));
         mockMvc.perform(post("/product/create").flashAttr("product", product))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/product/list"));
+                .andExpect(redirectedUrl("/list"));
 
         when(productService.findAll()).thenReturn(productData);
         mockMvc.perform(get("/product/list"))
@@ -165,7 +165,7 @@ public class ProductControllerTest {
 
         mockMvc.perform(post("/product/edit-product/{productId}", productId).flashAttr("product", product2))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/product/list"));
+                .andExpect(redirectedUrl("/list"));
 
         when(productService.findAll()).thenReturn(productData);
         mockMvc.perform(get("/product/list"))
@@ -215,7 +215,7 @@ public class ProductControllerTest {
 
         mockMvc.perform(get("/product/delete/{productId}", productId))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/product/list"));
+                .andExpect(redirectedUrl("/list"));
 
         assertEquals(0, productData.size());
         verify(productService, times(1)).delete(productId);
