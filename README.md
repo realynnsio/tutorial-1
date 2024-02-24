@@ -1,3 +1,5 @@
+# Check the deployed app [Here.](https://eshop-alma-csui-adpro-2024.koyeb.app/)
+
 # Reflection 1
 
 <hr>
@@ -61,3 +63,38 @@ Q: Look at your CI/CD workflows (GitHub)/pipelines (GitLab). Do you think the cu
 
 **Answer:**
 I believe my implementation has met the definition of CI/CD. Though I wasn’t able to make my own workflow for deployment, Koyeb has already handled that through its features, so with every push to the main branch it’ll always re-deploy. My tests have been automated and have a decent percentage of coverage too, covering everything other than the main method in the EshopApplication. The scorecard analysis and PMD analysis have been automated through GitHub workflows as well.
+
+<br>
+
+# Reflection 4 (Module 3)
+
+<hr>
+
+
+1) Explain what principles you apply to your project!
+
+**Answer:**
+I believe I've implemented all SOLID principles in my project. These implementations are as follows:
+- Single Responsibility Principle (SRP): At first, the controllers for the home page, the product pages, and the car pages were all kept in the same file: ProductController.java. I believe this violates the SRP since all of these controllers have very different functions and shouldn't be kept under one roof. To apply SRP, I simply decomposed them into 3 separate files: HomeController.java, CarController.java, and ProductController.java.
+- Open-Closed Principle (OCP): With the existence of extendable classes such as the Car and Product models, along with the CarService and ProductService interfaces, I believe this project already fulfills the OCP requirement of being open for extension but closed for modification.
+- Liskov Substitution Principle (LSP): This project has fulfilled LSP with CarServiceImpl and ProductServiceImpl being substitutable for CarService and ProductService.
+- Interface Segregation Principle (ISP): This project has fulfilled ISP by splitting CarService and ProductService into separate interfaces, since each has its own implementations separate from one another.
+- Dependency Inversion Principle (DIP): At first, CarController.java used the concrete implementation of CarServiceImpl rather than its interface, which violates the DIP. To fix this, I simply changed CarServiceImpl into CarService instead.
+
+<br>
+
+2) Explain the advantages of applying SOLID principles to your project with examples.
+
+**Answer:**
+- Maintainability: By applying SOLID principles, especially SRP, it becomes easier to maintain projects since every class is clearly separated by its function. I.e. if something goes wrong when users are trying to access the homepage, the developer only needs to check the HomeController.java to see what the problem is, rather than digging around in ProductController.java for the homepage routing.
+- Readability: By applying SOLID principles, especially ISP, it's much easier to see what a class is supposed to do when reading its interface. I.e. if the ProductService and CarService interfaces were merged, it'd be harder to guess what the object implementing this interface would be like and what it would be used for.
+- Security: By applying SOLID principles, especially OCP, the use of classes becomes much safer without much risk of accidentally causing ripple effects within the entire project by modifying a pre-existing class. I.e. new classes can extend the Product model and functionalities we've already made for the Product model would still work just fine.
+
+<br>
+
+3) Explain the disadvantages of not applying SOLID principles to your project with examples.
+
+**Answer:**
+- Hard to Debug: Without SOLID principles, especially SRP, it would be a lot harder to pinpoint what to fix when something goes wrong since a class can be responsible for multiple things at once. I.e. if tests for ProductController.java went wrong while it housed HomeController and CarController as well, it could be any of all 3 that went wrong.
+- Unpredictability: Without SOLID principles, especially LSP, the program might behave unpredictably and cause problems when using subclasses that deviate from their superclass. I.e. if there was a subclass of Product called FancyProduct which returned its name instead of its id when using getProductId(), the entire product-page functionality will fall apart when FancyProduct objects are used.
+- Lack of Flexibility: Without SOLID principles, especially DIP, a change in the concrete implementation can cause a ripple effect throughout the entire project, requiring accompanying changes to other parts of the project that use it. I.e. if CarServiceImpl didn't implement its interface and was used in CarController.java, parts of CarServiceImpl used in CarController could be deleted without notice and cause the entire project to crash.
