@@ -11,33 +11,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/product")
 public class ProductController {
 
     @Autowired
     private ProductService service;
     private int idCount = 0;
 
-    @GetMapping("")
-    public String goToHomePage(Model model){
-        return "homePage";
-    }
 
-    @GetMapping("/product/create")
+    @GetMapping("/create")
     public String createProductPage(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
         return "createProduct";
     }
 
-    @PostMapping("/product/create")
+    @PostMapping("/create")
     public String createProductPost(@ModelAttribute Product product, Model model) {
         product.setProductId(String.valueOf(idCount));
         idCount++;
         service.create(product);
-        return "redirect:/product/list";
+        return "redirect:/list";
     }
 
-    @GetMapping("/product/edit/{productId}")
+    @GetMapping("/edit/{productId}")
     public String editProductPage(@PathVariable String productId, Model model) {
         try {
             Product product = service.findById(productId);
@@ -48,20 +45,20 @@ public class ProductController {
         return "editProduct";
     }
 
-    @PostMapping("/product/edit-product/{productId}")
+    @PostMapping("/edit-product/{productId}")
     public String editProductPost(@ModelAttribute Product product, Model model, @PathVariable String productId) {
         product.setProductId(productId);
         service.edit(product);
-        return "redirect:/product/list";
+        return "redirect:/list";
     }
 
-    @GetMapping("/product/delete/{productId}")
+    @GetMapping("/delete/{productId}")
     public String deleteProductPost(@PathVariable String productId, Model model) {
         service.delete(productId);
-        return "redirect:/product/list";
+        return "redirect:/list";
     }
 
-    @GetMapping("/product/list")
+    @GetMapping("/list")
     public String productListPage(Model model) {
         List<Product> allProducts = service.findAll();
         model.addAttribute("products", allProducts);
@@ -70,8 +67,17 @@ public class ProductController {
 }
 
 @Controller
+@RequestMapping("")
+class HomeController extends ProductController {
+    @GetMapping("")
+    public String goToHomePage(Model model){
+        return "homePage";
+    }
+}
+
+@Controller
 @RequestMapping("/car")
-class CarController extends ProductController {
+class CarController {
     @Autowired
     private CarServiceImpl carService;
 
