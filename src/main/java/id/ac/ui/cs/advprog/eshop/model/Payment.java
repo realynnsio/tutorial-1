@@ -1,11 +1,9 @@
 package id.ac.ui.cs.advprog.eshop.model;
 
-import lombok.Builder;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
+import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 @Getter
@@ -23,37 +21,33 @@ public class Payment {
         if (paymentData.isEmpty()) throw new IllegalArgumentException();
         this.paymentData = paymentData;
 
-        if (this.method.equals("VOUCHER")) {
-            checkPaymentVoucher();
-        } else if (this.method.equals("CASH_ON_DELIVERY")) {
-            checkPaymentCashOnDelivery();
+        if (this.method.equals(PaymentMethod.VOUCHER.getValue())) {
+            validateVoucherPayment();
+        } else if (this.method.equals(PaymentMethod.CASH_ON_DELIVERY.getValue())) {
+            validateCashOnDeliveryPayment();
         }
     }
 
     private void setMethod(String method) {
-        String[] methods = {"VOUCHER", "CASH_ON_DELIVERY"};
-
-        if (Arrays.stream(methods).noneMatch(item -> (item.equals(method)))) {
-            throw new IllegalArgumentException();
-        } else {
+        if (PaymentMethod.contains(method)) {
             this.method = method;
+        } else {
+            throw new IllegalArgumentException();
         }
     }
 
     public void setStatus(String status) {
-        String[] statusList = {"SUCCESS", "REJECTED"};
-
-        if (Arrays.stream(statusList).noneMatch(item -> (item.equals(status)))) {
-            throw new IllegalArgumentException();
-        } else {
+        if (PaymentStatus.contains(status)) {
             this.status = status;
+        } else {
+            throw new IllegalArgumentException();
         }
     }
 
-    private void checkPaymentVoucher() {
+    private void validateVoucherPayment() {
         String voucher = this.paymentData.get("voucherCode");
 
-        this.status = "REJECTED";
+        this.status = PaymentStatus.REJECTED.getValue();
         boolean isNull = voucher == null? true : false;
         boolean isSixteen = voucher.length() == 16? true : false;
         boolean isEshop = voucher.startsWith("ESHOP")? true : false;
@@ -64,17 +58,17 @@ public class Payment {
         }
 
         if (!isNull && isSixteen && isEshop && count == 8) {
-            this.status = "SUCCESS";
+            this.status = PaymentStatus.SUCCESS.getValue();
         }
     }
 
-    private void checkPaymentCashOnDelivery() {
+    private void validateCashOnDeliveryPayment() {
         String[] keys = {"address", "deliveryFee"};
 
         for (String key : keys) {
             String value = this.paymentData.get(key);
             if (value == null || value.equals("")) {
-                this.status = "REJECTED";
+                this.status = PaymentStatus.REJECTED.getValue();
             }
         }
     }
