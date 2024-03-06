@@ -115,3 +115,7 @@ I feel that it also gets rid of bias since sometimes when creating tests after i
 
 
 2) You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests.
+
+**Answer:**
+I believe they do abide by F.I.R.S.T. principles since they're fast, isolated, repeatable, self-validating, and thorough.
+I also feel like i've already made as few tests as possible to cover all paths.
