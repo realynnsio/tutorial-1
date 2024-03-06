@@ -98,3 +98,20 @@ I believe I've implemented all SOLID principles in my project. These implementat
 - Hard to Debug: Without SOLID principles, especially SRP, it would be a lot harder to pinpoint what to fix when something goes wrong since a class can be responsible for multiple things at once. I.e. if tests for ProductController.java went wrong while it housed HomeController and CarController as well, it could be any of all 3 that went wrong.
 - Unpredictability: Without SOLID principles, especially LSP, the program might behave unpredictably and cause problems when using subclasses that deviate from their superclass. I.e. if there was a subclass of Product called FancyProduct which returned its name instead of its id when using getProductId(), the entire product-page functionality will fall apart when FancyProduct objects are used.
 - Lack of Flexibility: Without SOLID principles, especially DIP, a change in the concrete implementation can cause a ripple effect throughout the entire project, requiring accompanying changes to other parts of the project that use it. I.e. if CarServiceImpl didn't implement its interface and was used in CarController.java, parts of CarServiceImpl used in CarController could be deleted without notice and cause the entire project to crash.
+
+<br>
+
+# Reflection 5 (Module 4)
+
+<hr>
+
+1) Reflect based on Percival (2017) proposed self-reflective questions (in “Principles and Best Practice of Testing” submodule,
+chapter “Evaluating Your Testing Objectives”), whether this TDD flow is useful enough for you or not.
+If not, explain things that you need to do next time you make more tests.
+
+**Answer:**
+I feel that this TDD flow is very useful for me, since it keeps me on track about what functionalities I need to make and how to properly implement them.
+I feel that it also gets rid of bias since sometimes when creating tests after implementations, I find myself making the tests to fit my implementation instead of the other way around.
+
+
+2) You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests.
