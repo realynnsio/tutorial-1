@@ -118,4 +118,4 @@ I feel that it also gets rid of bias since sometimes when creating tests after i
 
 **Answer:**
 I believe they do abide by F.I.R.S.T. principles since they're fast, isolated, repeatable, self-validating, and thorough.
-I also feel like i've already made as few tests as possible to cover all paths.
+I also feel like I've already made as few tests as possible to cover all paths.
