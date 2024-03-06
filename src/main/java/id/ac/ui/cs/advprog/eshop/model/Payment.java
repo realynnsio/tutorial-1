@@ -28,6 +28,10 @@ public class Payment {
         }
     }
 
+    public Payment(String id, String method, Map<String, String> paymentData) {
+        this(id, method, "", paymentData);
+    }
+
     private void setMethod(String method) {
         if (PaymentMethod.contains(method)) {
             this.method = method;
