@@ -31,7 +31,7 @@ class PaymentTest {
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
 
         Payment payment = new Payment("eb558e9f-1c39-460e-8860-71af6af63bd6",
-                "VOUCHER", "SUCCESS", paymentData);
+                "VOUCHER", "REJECTED", paymentData);
 
         assertSame(this.paymentData, payment.getPaymentData());
         assertEquals("eb558e9f-1c39-460e-8860-71af6af63bd6", payment.getId());
@@ -42,14 +42,21 @@ class PaymentTest {
     @Test
     void testCreatePaymentNotValidVoucher() {
         paymentData.put("voucherCode", "ESHOP1234ABC578");
+        Payment payment1 = new Payment("id1", "VOUCHER",
+                "SUCCESS", paymentData);
 
-        Payment payment = new Payment("eb558e9f-1c39-460e-8860-71af6af63bd6",
-                "VOUCHER", "SUCCESS", paymentData);
+        paymentData.put("voucherCode", "ESHOA1234ABC5678");
+        Payment payment2 = new Payment("id2", "VOUCHER",
+                "SUCCESS", paymentData);
 
-        assertSame(this.paymentData, payment.getPaymentData());
-        assertEquals("eb558e9f-1c39-460e-8860-71af6af63bd6", payment.getId());
-        assertEquals("VOUCHER", payment.getMethod());
-        assertEquals("REJECTED", payment.getStatus());
+        paymentData.put("voucherCode", "ESHOP1234ABC5D78");
+        Payment payment3 = new Payment("id3", "VOUCHER",
+                "SUCCESS", paymentData);
+
+        assertEquals("REJECTED", payment1.getStatus());
+        assertEquals("REJECTED", payment2.getStatus());
+        assertEquals("REJECTED", payment3.getStatus());
+
     }
 
     @Test
@@ -71,23 +78,25 @@ class PaymentTest {
         paymentData.put("address", "Home");
         paymentData.put("deliveryFee", "");
 
-        Payment payment = new Payment("eb558e9f-1c39-460e-8860-71af6af63bd6",
-                "CASH_ON_DELIVERY", "SUCCESS", paymentData);
+        Payment payment1 = new Payment("id1", "CASH_ON_DELIVERY",
+                "SUCCESS", paymentData);
 
-        assertSame(this.paymentData, payment.getPaymentData());
-        assertEquals("eb558e9f-1c39-460e-8860-71af6af63bd6", payment.getId());
-        assertEquals("CASH_ON_DELIVERY", payment.getMethod());
-        assertEquals("REJECTED", payment.getStatus());
+        paymentData.remove("deliveryFee");
+        Payment payment2 = new Payment("id2", "CASH_ON_DELIVERY",
+                "SUCCESS", paymentData);
+
+        assertEquals("REJECTED", payment1.getStatus());
+        assertEquals("REJECTED", payment2.getStatus());
     }
 
     @Test
     void testCreatePaymentMethodMismatch() {
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            Payment payment = new Payment("eb558e9f-1c39-460e-8860-71af6af63bd6",
-                    "CASH_ON_DELIVERY", "SUCCESS", paymentData);
-        });
+        Payment payment = new Payment("eb558e9f-1c39-460e-8860-71af6af63bd6",
+                "CASH_ON_DELIVERY", "SUCCESS", paymentData);
+
+        assertEquals("REJECTED", payment.getStatus());
     }
 
     @Test
