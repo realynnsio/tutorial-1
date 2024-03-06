@@ -29,7 +29,7 @@ public class Payment {
     }
 
     public Payment(String id, String method, Map<String, String> paymentData) {
-        this(id, method, "", paymentData);
+        this(id, method, PaymentStatus.PROCESSING.getValue(), paymentData);
     }
 
     private void setMethod(String method) {
