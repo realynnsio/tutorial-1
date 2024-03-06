@@ -13,6 +13,10 @@ public class PaymentRepository {
     public Payment save(Payment payment) {
         return null;
     }
+
+    public Payment setStatus(Payment payment, String status) {
+        return null;
+    }
     
     public Payment findById(String id) {
         return null;
