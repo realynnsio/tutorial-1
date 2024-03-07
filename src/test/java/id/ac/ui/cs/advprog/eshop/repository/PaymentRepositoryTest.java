@@ -3,6 +3,7 @@ package id.ac.ui.cs.advprog.eshop.repository;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
+import id.ac.ui.cs.advprog.eshop.model.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PaymentRepositoryTest {
     PaymentRepository paymentRepository;
     List<Payment> payments;
+    List<Product> products;
 
     @BeforeEach
     void setUp() {
@@ -21,14 +23,14 @@ class PaymentRepositoryTest {
         Map<String, String> paymentData = new HashMap<>();
         paymentData.put("voucherCode", "ESHOP1234ABC5678");
 
-        payments = new ArrayList<>();
+        this.payments = new ArrayList<>();
         Payment payment1 = new Payment("13652556-012a-4c07-b546-54eb1396d79b",
                 PaymentMethod.VOUCHER.getValue(), paymentData);
-        payments.add(payment1);
+        this.payments.add(payment1);
 
         Payment payment2 = new Payment("7f9e15bb-4b15-42f4-aebc-c3af385fb078",
                 PaymentMethod.VOUCHER.getValue(), paymentData);
-        payments.add(payment2);
+        this.payments.add(payment2);
 
         paymentData.clear();
         paymentData.put("address", "Home");
@@ -36,7 +38,21 @@ class PaymentRepositoryTest {
 
         Payment payment3 = new Payment("e334ef40-9eff-4da8-9487-8ee697ecbf1e",
                 PaymentMethod.CASH_ON_DELIVERY.getValue(), paymentData);
-        payments.add(payment3);
+        this.payments.add(payment3);
+
+        this.products = new ArrayList<>();
+        Product product1 = new Product();
+        product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product1.setProductName("Sampo Cap Bambang");
+        product1.setProductQuantity(2);
+
+        Product product2 = new Product();
+        product2.setProductId("a2c62328-4a37-4664-83c7-f32db8620155");
+        product2.setProductName("Sabun Cap Usep");
+        product2.setProductQuantity(1);
+
+        this.products.add(product1);
+        this.products.add(product2);
     }
 
     @Test
@@ -117,6 +133,13 @@ class PaymentRepositoryTest {
 
         List<Payment> paymentList = paymentRepository.findAll();
         assertEquals(3, paymentList.size());
+    }
+
+    @Test
+    void testSetOrderIfIdFound() {
+        for (Payment payment : payments) {
+            paymentRepository.save(payment);
+        }
     }
 
 }

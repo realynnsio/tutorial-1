@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
 @ExtendWith(MockitoExtension.class)
 public class OrderServiceImplTest {
     @InjectMocks
-    OrderServiceImpl orderService;
+    OrderService orderService;
 
     @Mock
     OrderRepository orderRepository;

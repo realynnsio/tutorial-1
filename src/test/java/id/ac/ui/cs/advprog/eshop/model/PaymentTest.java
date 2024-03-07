@@ -9,15 +9,32 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 class PaymentTest {
     private Map<String, String> paymentData;
+    private List<Product> products;
 
     @BeforeEach
     void setUp() {
         paymentData = new HashMap<>();
+
+        this.products = new ArrayList<>();
+        Product product1 = new Product();
+        product1.setProductId("13652556-012a-4c07-b546-54eb1396d79b");
+        product1.setProductName("Sampo Cap Bambang");
+        product1.setProductQuantity(2);
+
+        Product product2 = new Product();
+        product2.setProductId("a2c62328-4a37-4664-83c7-f32db8620155");
+        product2.setProductName("Sabun Cap Usep");
+        product2.setProductQuantity(1);
+
+        this.products.add(product1);
+        this.products.add(product2);
     }
 
     @Test
@@ -141,5 +158,33 @@ class PaymentTest {
                 PaymentStatus.SUCCESS.getValue(), paymentData);
 
         assertThrows(IllegalArgumentException.class, () -> payment.setStatus("MEOW"));
+    }
+
+    @Test
+    void testSetOrderIfIdValid() {
+        Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
+                this.products, 1708560000L, "Safira Sudrajat");
+
+        paymentData.put("voucherCode", "ESHOP1234ABC578");
+        Payment payment = new Payment(order.getId(),
+                PaymentMethod.VOUCHER.getValue(),
+                PaymentStatus.SUCCESS.getValue(), paymentData);
+
+        payment.setOrder(order);
+        assertEquals(order.getId(), payment.getId());
+        assertEquals(order.getId(), payment.getOrder().getId());
+    }
+
+    @Test
+    void testSetOrderIfIdNotValid() {
+        Order order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
+                this.products, 1708560000L, "Safira Sudrajat");
+
+        paymentData.put("voucherCode", "ESHOP1234ABC578");
+        Payment payment = new Payment("eb558e9f-1c39-460e-8860-71af6af63bd6",
+                PaymentMethod.VOUCHER.getValue(),
+                PaymentStatus.SUCCESS.getValue(), paymentData);
+
+        assertThrows(IllegalArgumentException.class, () -> payment.setOrder(order));
     }
 }
