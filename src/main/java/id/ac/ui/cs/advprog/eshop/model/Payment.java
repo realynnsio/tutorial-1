@@ -12,6 +12,7 @@ public class Payment {
     String method;
     Map<String, String> paymentData;
     String status;
+    Order order;
 
     public Payment(String id, String method, String status, Map<String, String> paymentData){
         this.id = id;
@@ -75,5 +76,15 @@ public class Payment {
                 this.status = PaymentStatus.REJECTED.getValue();
             }
         }
+    }
+
+    public Order setOrder(Order order) {
+        if (order.getId().equals(this.id)) {
+            this.order = order;
+        } else {
+            throw new IllegalArgumentException("Order ID: " + order.getId() + "does not match Payment ID: " + this.id);
+        }
+
+        return order;
     }
 }
