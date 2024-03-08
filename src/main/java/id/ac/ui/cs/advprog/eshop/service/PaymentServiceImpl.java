@@ -28,24 +28,27 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Payment setStatus(Payment payment, String status) {
-
         Payment changedStatusPayment = getPayment(payment.getId());
 
         changedStatusPayment.setStatus(status);
-
-        if (status.equals(PaymentStatus.SUCCESS.getValue())) {
-            changedStatusPayment.getOrder().setStatus(OrderStatus.SUCCESS.getValue());
-        } else if (status.equals(PaymentStatus.REJECTED.getValue())) {
-            changedStatusPayment.getOrder().setStatus(OrderStatus.FAILED.getValue());
-        }
+        updateOrderStatus(changedStatusPayment, status);
 
         return changedStatusPayment;
     }
 
+    private void updateOrderStatus(Payment payment, String status) {
+        Order order = payment.getOrder();
+
+        if (status.equals(PaymentStatus.SUCCESS.getValue())) {
+            order.setStatus(OrderStatus.SUCCESS.getValue());
+        } else if (status.equals(PaymentStatus.REJECTED.getValue())) {
+            order.setStatus(OrderStatus.FAILED.getValue());
+        }
+    }
+
     @Override
     public Payment getPayment(String paymentId) {
-        Payment payment = paymentRepository.findById(paymentId);
-        return payment;
+        return paymentRepository.findById(paymentId);
     }
 
     @Override
