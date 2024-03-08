@@ -47,20 +47,20 @@ public class PaymentServiceImplTest {
                 products, 1708570000L, "Safira Sudrajat");
         orderList.add(order2);
 
-        Map<String, String> paymentData = new HashMap<>();
-        paymentData.put("voucherCode", "ESHOP1234ABC5678");
+        Map<String, String> paymentData1 = new HashMap<>();
+        paymentData1.put("voucherCode", "ESHOP1234ABC5678");
 
         paymentList = new ArrayList<>();
         Payment payment1 = new Payment(order1.getId(),
-                PaymentMethod.VOUCHER.getValue(), paymentData);
+                PaymentMethod.VOUCHER.getValue(), paymentData1);
         paymentList.add(payment1);
 
-        paymentData.clear();
-        paymentData.put("address", "Home");
-        paymentData.put("deliveryFee", "Amount");
+        Map<String, String> paymentData2 = new HashMap<>();
+        paymentData2.put("address", "Home");
+        paymentData2.put("deliveryFee", "Amount");
 
         Payment payment2 = new Payment(order2.getId(),
-                PaymentMethod.CASH_ON_DELIVERY.getValue(), paymentData);
+                PaymentMethod.CASH_ON_DELIVERY.getValue(), paymentData2);
         paymentList.add(payment2);
     }
 
@@ -68,6 +68,7 @@ public class PaymentServiceImplTest {
     void testAddPaymentSuccess() {
         Payment payment = paymentList.get(0);
         doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(payment).when(paymentRepository).findById(payment.getId());
 
         Payment addedPayment = paymentService.addPayment(orderList.get(0),
                 payment.getMethod(), payment.getPaymentData());
@@ -79,16 +80,14 @@ public class PaymentServiceImplTest {
         assertEquals(addedPayment.getStatus(), payment.getStatus());
         assertEquals(addedPayment.getPaymentData(), payment.getPaymentData());
 
-        verify(paymentService, times(1)).addPayment(any(Order.class), any(String.class), any(Map.class));
+        verify(paymentRepository, times(1)).save(any(Payment.class));
     }
 
     @Test
     void testAddPaymentInvalidArgument() {
         Payment payment = paymentList.get(0);
-        doReturn(payment).when(paymentRepository).save(any(Payment.class));
 
-
-        assertThrows(InvalidArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             Payment addedPayment = paymentService.addPayment(orderList.get(0),
                     "MEOW" , payment.getPaymentData());
         });
@@ -98,40 +97,37 @@ public class PaymentServiceImplTest {
     void testSetStatusToSuccess(){
         Payment payment = paymentList.get(0);
         doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(payment).when(paymentRepository).findById(payment.getId());
 
         Payment addedPayment = paymentService.addPayment(orderList.get(0),
                 payment.getMethod(), payment.getPaymentData());
 
-        doReturn(addedPayment).when(paymentRepository).findById(addedPayment.getId());
         paymentService.setStatus(addedPayment, PaymentStatus.SUCCESS.getValue());
 
         assertEquals(addedPayment.getStatus(), PaymentStatus.SUCCESS.getValue());
         assertEquals(orderList.get(0).getStatus(), OrderStatus.SUCCESS.getValue());
-
-        verify(paymentService, times(1)).setStatus(any(Payment.class), any(String.class));
     }
 
     @Test
     void testSetStatusToRejected(){
         Payment payment = paymentList.get(0);
         doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(payment).when(paymentRepository).findById(payment.getId());
 
         Payment addedPayment = paymentService.addPayment(orderList.get(0),
                 payment.getMethod(), payment.getPaymentData());
 
-        doReturn(addedPayment).when(paymentRepository).findById(addedPayment.getId());
         paymentService.setStatus(addedPayment, PaymentStatus.REJECTED.getValue());
 
         assertEquals(addedPayment.getStatus(), PaymentStatus.REJECTED.getValue());
         assertEquals(orderList.get(0).getStatus(), OrderStatus.FAILED.getValue());
-
-        verify(paymentService, times(1)).setStatus(any(Payment.class), any(String.class));
     }
 
     @Test
     void testSetStatusInvalidStatus(){
         Payment payment = paymentList.get(0);
         doReturn(payment).when(paymentRepository).save(any(Payment.class));
+        doReturn(payment).when(paymentRepository).findById(payment.getId());
 
         Payment addedPayment = paymentService.addPayment(orderList.get(0),
                 payment.getMethod(), payment.getPaymentData());
