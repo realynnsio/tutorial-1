@@ -1,8 +1,11 @@
 # Check the deployed app [Here.](https://eshop-alma-csui-adpro-2024.koyeb.app/)
 
+<br>
+<hr>
+
 # Reflection 1
 
-<hr>
+<br>
 
 Q: You already implemented two new features using Spring Boot. Check again your source code and evaluate the coding standards that you have learned in this module. Write clean code principles and secure coding practices that have been applied to your code.  If you find any mistake in your source code, please explain how to improve your code. 
 
@@ -20,10 +23,11 @@ Q: You already implemented two new features using Spring Boot. Check again your 
 3. My homepage is still very lacking.
 
 <br>
+<hr>
 
 # Reflection 2
 
-<hr>
+<br>
 
 Q: After writing the unit test, how do you feel? How many unit tests should be made in a class? How to make sure that our unit tests are enough to verify our program? It would be good if you learned about code coverage. Code coverage is a metric that can help you understand how much of your source is tested. If you have 100% code coverage, does that mean your code has no bugs or errors?
 
@@ -43,10 +47,11 @@ What do you think about the cleanliness of the code of the new functional test s
 I think it wouldn't be very clean and would reduce code quality to do this since it's redundant to make a separate suite despite requiring the same setup. For a more efficient alternative, it would be better to broaden the CreateProductFunctionalTest.java into a ProductFunctionalTest.java where both tests of creating products and tests of verifying product amounts could be housed in one place.
 
 <br>
+<hr>
 
 # Reflection 3
 
-<hr>
+<br>
 
 Q: List the code quality issue(s) that you fixed during the exercise and explain your strategy on fixing them.
 
@@ -65,11 +70,11 @@ Q: Look at your CI/CD workflows (GitHub)/pipelines (GitLab). Do you think the cu
 I believe my implementation has met the definition of CI/CD. Though I wasn’t able to make my own workflow for deployment, Koyeb has already handled that through its features, so with every push to the main branch it’ll always re-deploy. My tests have been automated and have a decent percentage of coverage too, covering everything other than the main method in the EshopApplication. The scorecard analysis and PMD analysis have been automated through GitHub workflows as well.
 
 <br>
+<hr>
 
 # Reflection 4 (Module 3)
 
-<hr>
-
+<br>
 
 1) Explain what principles you apply to your project!
 
@@ -100,10 +105,11 @@ I believe I've implemented all SOLID principles in my project. These implementat
 - Lack of Flexibility: Without SOLID principles, especially DIP, a change in the concrete implementation can cause a ripple effect throughout the entire project, requiring accompanying changes to other parts of the project that use it. I.e. if CarServiceImpl didn't implement its interface and was used in CarController.java, parts of CarServiceImpl used in CarController could be deleted without notice and cause the entire project to crash.
 
 <br>
+<hr>
 
 # Reflection 5 (Module 4)
 
-<hr>
+<br>
 
 1) Reflect based on Percival (2017) proposed self-reflective questions (in “Principles and Best Practice of Testing” submodule,
 chapter “Evaluating Your Testing Objectives”), whether this TDD flow is useful enough for you or not.
@@ -112,10 +118,17 @@ If not, explain things that you need to do next time you make more tests.
 **Answer:**
 I feel that this TDD flow is very useful for me, since it keeps me on track about what functionalities I need to make and how to properly implement them.
 I feel that it also gets rid of bias since sometimes when creating tests after implementations, I find myself making the tests to fit my implementation instead of the other way around.
+In the perspective of correctness, I've tested the correctness of singular functions running on their own, but I'm definitely lacking on functional tests and tests that check whether these parts fit together as a whole.
+Next time I make tests, I want to make more functional tests and more edge case tests. On the topic of maintainability, I believe my tests allow for easy refactoring. I also believe my tests have already helped me in maintaining a more productive workflow.
 
+<br>
 
 2) You have created unit tests in Tutorial. Now reflect whether your tests have successfully followed F.I.R.S.T. principle or not. If not, explain things that you need to do the next time you create more tests.
 
 **Answer:**
-I believe they do abide by F.I.R.S.T. principles since they're fast, isolated, repeatable, self-validating, and thorough.
-I also feel like I've already made as few tests as possible to cover all paths.
+I believe they do abide by F.I.R.S.T. principles, but could still be improved.
+- Fast: My tests don't take long to run and don't interrupt my workflow. They also use stubs and I separate unit tests from functional tests. However, I do believe they can be more optimized and run even faster.
+- Isolated/Independent: My tests aren't dependent to other test cases. They can all run on their own and I use the setUp function to prepare everything before each test. A few of my tests do repeat code though, which could be made better in future fixes.
+- Repeatable: My tests give out consistent results.
+- Self-Validating: My tests are all self-validating with strict assertions to pass/fail, but I still haven't accomplished the "one test one assertion" principle. This could be improved in future fixes.
+- Thorough/Timely: My tests cover a lot of both happy paths and unhappy paths, and they're designed before coding. However, I'm not sure if they've covered all edge cases and possibilities of results and errors. The next time I create tests, I could definitely try to explore more cases.

@@ -5,6 +5,7 @@ import id.ac.ui.cs.advprog.eshop.enums.OrderStatus;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import org.checkerframework.checker.units.qual.A;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,6 +36,11 @@ class PaymentTest {
 
         this.products.add(product1);
         this.products.add(product2);
+    }
+
+    @AfterEach
+    void tearDown() {
+        products.clear();
     }
 
     @Test

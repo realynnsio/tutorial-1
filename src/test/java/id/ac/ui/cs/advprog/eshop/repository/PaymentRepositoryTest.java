@@ -4,6 +4,7 @@ import id.ac.ui.cs.advprog.eshop.enums.PaymentMethod;
 import id.ac.ui.cs.advprog.eshop.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.model.Product;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -53,6 +54,12 @@ class PaymentRepositoryTest {
 
         this.products.add(product1);
         this.products.add(product2);
+    }
+
+    @AfterEach
+    void tearDown() {
+        payments.clear();
+        products.clear();
     }
 
     @Test

@@ -7,6 +7,7 @@ import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,6 +63,12 @@ public class PaymentServiceImplTest {
         Payment payment2 = new Payment(order2.getId(),
                 PaymentMethod.CASH_ON_DELIVERY.getValue(), paymentData2);
         paymentList.add(payment2);
+    }
+
+    @AfterEach
+    void tearDown() {
+        paymentList.clear();
+        orderList.clear();
     }
 
     @Test
